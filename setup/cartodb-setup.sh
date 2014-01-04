@@ -21,6 +21,8 @@ export EMAIL=monkey@example.com
 
 echo "127.0.0.1 ${USER}.localhost.lan" | sudo tee -a /etc/hosts
 
+sudo redis-server&
+
 bundle exec rake rake:db:create
 bundle exec rake rake:db:migrate
 bundle exec rake cartodb:db:create_publicuser
@@ -31,4 +33,5 @@ bundle exec rake cartodb:db:load_functions
 ln -s /usr/local/etc/cartodb.development.js /usr/local/src/CartoDB-SQL-API/config/environments/development.js
 ln -s /usr/local/etc/windshaft.development.js /usr/local/src/Windshaft-cartodb/config/environments/development.js
 
-/etc/init.d/redis-server stop
+redis-cli shutdown
+# /etc/init.d/redis-server stop
