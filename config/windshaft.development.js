@@ -1,7 +1,10 @@
 var config = {
      environment: 'development'
     ,port: 8181
-    ,host: '127.0.0.1'
+    ,host: '0.0.0.0'
+    // Regular expression pattern to extract username
+    // from hostname. Must have a single grabbing block.
+    ,user_from_host: '^(.*)\\.localhost'
     // Maximum number of connections for one process
     // 128 is a good value with a limit of 1024 open file descriptors
     ,maxConnections:128
@@ -10,12 +13,18 @@ var config = {
     ,enable_cors: true
     ,cache_enabled: false
     ,log_format: '[:date] :req[X-Real-IP] :method :req[Host]:url :status :response-time ms -> :res[Content-Type] (:res[X-Tiler-Profiler])'
+    // Templated database username for authorized user
+    // Supported labels: 'user_id' (read from redis)
     ,postgres_auth_user: 'development_cartodb_user_<%= user_id %>'
+    // Templated database password for authorized user
+    // Supported labels: 'user_id', 'user_password' (both read from redis)
+    ,postgres_auth_pass: '<%= user_password %>'
     ,postgres: {
         // Parameters to pass to datasource plugin of mapnik
         // See http://github.com/mapnik/mapnik/wiki/PostGIS
         type: "postgis",
         user: "publicuser",
+        password: "public",
         host: '127.0.0.1',
         port: 5432,
         extent: "-20037508.3,-20037508.3,20037508.3,20037508.3",
@@ -28,7 +37,7 @@ var config = {
         simplify_geometries: true,
         max_size: 500
     }
-    ,mapnik_version: undefined
+    ,mapnik_version: '2.1.0'
     ,renderer: {
       // Milliseconds since last access before renderer cache item expires
       cache_ttl: 60000,
@@ -36,6 +45,7 @@ var config = {
       bufferSize: 64
     }
     ,millstone: {
+        // Needs to be writable by server user
         cache_basedir: '/tmp/cdb-tiler-dev/millstone-dev'
     }
     ,redis: {
@@ -54,7 +64,7 @@ var config = {
     }
     ,sqlapi: {
         protocol: 'http',
-        host: 'localhost.lan',
+        domain: 'localhost.lan',
         port: 8080,
         version: 'v1'
     }
