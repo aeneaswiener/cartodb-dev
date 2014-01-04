@@ -17,4 +17,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :shell, :path => "./setup/cartodb-setup.sh"
   config.vm.network :forwarded_port, guest: 3000, host: 3000
   config.vm.network :forwarded_port, guest: 8181, host: 8181
+  config.vm.network :forwarded_port, guest: 8080, host: 8080
 end
