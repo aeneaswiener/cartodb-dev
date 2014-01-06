@@ -7,5 +7,5 @@ npm install
 
 cd /usr/local/src/Windshaft-cartodb
 git checkout master
-./configure --with-mapnik-version='2.1.0'
+./configure --with-mapnik-version='2.1.1'
 npm install
