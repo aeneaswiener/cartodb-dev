@@ -24,6 +24,7 @@ echo "127.0.0.1 ${USER}.localhost.lan" | sudo tee -a /etc/hosts
 sudo redis-server&
 
 bundle exec rake rake:db:create
+bundle exec rake rake:db:migrate
 RAILS_ENV=production bundle exec rake rake:db:create
 RAILS_ENV=production bundle exec rake rake:db:migrate
 RAILS_ENV=production bundle exec rake cartodb:db:create_publicuser
