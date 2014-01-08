@@ -23,12 +23,14 @@ echo "127.0.0.1 ${USER}.localhost.lan" | sudo tee -a /etc/hosts
 
 sudo redis-server&
 
-bundle exec rake rake:db:create
 bundle exec rake rake:db:migrate
-bundle exec rake cartodb:db:create_publicuser
-bundle exec rake cartodb:db:create_user SUBDOMAIN="${USER}" PASSWORD="${PASSWORD}" EMAIL="${EMAIL}"
-bundle exec rake cartodb:db:create_importer_schema
-bundle exec rake cartodb:db:load_functions
+RAILS_ENV=production bundle exec rake rake:db:create
+RAILS_ENV=production bundle exec rake rake:db:migrate
+RAILS_ENV=production bundle exec rake cartodb:db:create_publicuser
+RAILS_ENV=production bundle exec rake cartodb:db:create_user SUBDOMAIN="${USER}" PASSWORD="${PASSWORD}" EMAIL="${EMAIL}"
+RAILS_ENV=production bundle exec rake cartodb:db:create_importer_schema
+RAILS_ENV=production bundle exec rake cartodb:db:load_functions
+RAILS_ENV=production bundle exec rake assets:precompile
 
 # ln -s /usr/local/etc/cartodb.development.js /usr/local/src/CartoDB-SQL-API/config/environments/development.js
 # ln -s /usr/local/etc/windshaft.development.js /usr/local/src/Windshaft-cartodb/config/environments/development.js
