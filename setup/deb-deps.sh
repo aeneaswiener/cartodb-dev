@@ -10,7 +10,7 @@ apt-get update
 apt-get install -y python-software-properties
 
 add-apt-repository -y ppa:cartodb/gis
-add-apt-repository -y ppa:mapnik/v2.1.0
+add-apt-repository -y ppa:cartodb/mapnik
 add-apt-repository -y ppa:cartodb/nodejs
 add-apt-repository -y ppa:cartodb/redis
 add-apt-repository -y ppa:cartodb/postgresql
