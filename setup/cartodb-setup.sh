@@ -8,7 +8,7 @@ mv config/database.yml.sample config/database.yml
 
 # get postgres to drop all security
 mv /etc/postgresql/9.1/main/pg_hba.conf /etc/postgresql/9.1/main/pg_hba.conf.original
-ln -s /usr/local/etc/pg_hba.conf /etc/postgresql/9.1/main/pg_hba.conf
+ln -s /usr/local/src/cartodb-dev/config/pg_hba.conf /etc/postgresql/9.1/main/pg_hba.conf
 
 /etc/init.d/postgresql restart
 
