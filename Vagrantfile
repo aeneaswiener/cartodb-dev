@@ -16,8 +16,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :shell, :path => "./setup/postgis-install.sh"
   config.vm.provision :shell, :path => "./setup/postgis-setup.sh"
   config.vm.provision :shell, :path => "./setup/python-deps.sh"
-  config.vm.provision :shell, :path => "./setup/ruby-deps.sh"
   config.vm.provision :shell, :path => "./setup/node-deps.sh"
+  config.vm.provision :shell, :path => "./setup/ruby-deps.sh"
   config.vm.provision :shell, :path => "./setup/cartodb-setup.sh"
   config.vm.network :forwarded_port, guest: 3000, host: 3000
   config.vm.network :forwarded_port, guest: 8181, host: 8181
