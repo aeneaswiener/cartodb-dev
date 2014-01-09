@@ -15,10 +15,10 @@ ln -s /usr/local/src/cartodb-dev/config/pg_hba.conf /etc/postgresql/9.1/main/pg_
 
 sleep 5s
 
-export USER=monkey
-export PASSWORD=monkey
-export ADMIN_PASSWORD=monkey
-export EMAIL=monkey@example.com
+export USER=production
+export PASSWORD=production
+export ADMIN_PASSWORD=production
+export EMAIL=production@production.com
 
 echo "127.0.0.1 ${USER}.localhost.lan" | sudo tee -a /etc/hosts
 
@@ -36,6 +36,16 @@ bundle exec rake cartodb:db:load_functions
 # Create production user
 RAILS_ENV=production sudo -E bundle exec rake rake:db:migrate
 RAILS_ENV=production sudo -E bundle exec rake cartodb:db:create_user SUBDOMAIN="${USER}" PASSWORD="${PASSWORD}" EMAIL="${EMAIL}"
+RAILS_ENV=production sudo -E bundle exec rake cartodb:db:load_functions
+
+# Restore redis 
+RAILS_ENV=production sudo -E script/restore_redis
+
+# Precompile assets
+RAILS_ENV=production sudo -E bundle exec rake assets:precompile
+
+# Start server using
+# RAILS_ENV=production sudo -E bundle exec foreman start -p 3000
 
 # ln -s /usr/local/etc/cartodb.development.js /usr/local/src/CartoDB-SQL-API/config/environments/development.js
 # ln -s /usr/local/etc/windshaft.development.js /usr/local/src/Windshaft-cartodb/config/environments/development.js
