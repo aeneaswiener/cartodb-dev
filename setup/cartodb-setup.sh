@@ -21,6 +21,7 @@ export ADMIN_PASSWORD=production
 export EMAIL=production@production.com
 
 echo "127.0.0.1 ${USER}.localhost.lan" | sudo tee -a /etc/hosts
+echo "127.0.0.1 ${USER}.cytora.net" | sudo tee -a /etc/hosts
 
 # Start redis for setup, will be shut down at the end of setup
 sudo redis-server&
@@ -37,6 +38,16 @@ bundle exec rake cartodb:db:load_functions
 RAILS_ENV=production sudo -E bundle exec rake rake:db:migrate
 RAILS_ENV=production sudo -E bundle exec rake cartodb:db:create_user SUBDOMAIN="${USER}" PASSWORD="${PASSWORD}" EMAIL="${EMAIL}"
 RAILS_ENV=production sudo -E bundle exec rake cartodb:db:load_functions
+
+# Set account limits
+RAILS_ENV=production sudo -E bundle exec rake cartodb:db:set_user_account_type["production","DEDICATED"]
+RAILS_ENV=production sudo -E bundle exec rake cartodb:db:set_unlimited_table_quota["production"]
+RAILS_ENV=production sudo -E bundle exec rake cartodb:db:set_user_quota["production",50000]
+RAILS_ENV=production sudo -E bundle exec rake cartodb:db:set_user_private_tables_enabled["production",true]
+
+# Restore redis 
+RAILS_ENV=production sudo -E bundle exec rake cartodb:db:save_users_metadata
+RAILS_ENV=production sudo -E bundle exec rake cartodb:redis:user_metadata
 
 # Restore redis 
 RAILS_ENV=production sudo -E script/restore_redis
